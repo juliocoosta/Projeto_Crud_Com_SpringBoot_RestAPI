@@ -2,6 +2,8 @@ package br.com.springboot.curso_jdev_treinamento.controllers;
 
 import java.util.List;
 
+import javax.jws.soap.SOAPBinding.Style;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +99,7 @@ public class GreetingsController {
     	
     usuarioRepository.deleteById(iduser);
     
-    return new ResponseEntity<String>("User deletado com sucesso", HttpStatus.OK);
+    return new ResponseEntity<String>("Usuário excluido com sucesso", HttpStatus.OK);
     	
     	
     }

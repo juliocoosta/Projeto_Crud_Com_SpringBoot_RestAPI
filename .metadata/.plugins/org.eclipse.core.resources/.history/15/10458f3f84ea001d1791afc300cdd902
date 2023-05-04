@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+	crossorigin="anonymous">
+	
+	<style>
+	
+			*{
+    			margin: 0%;
+   				padding: 0%;
+			}
+			
+			
+			
+				
+			body{
+   					
+    			background-image: url(https://www.cpajournal.com/wp-content/uploads/2019/02/GettyImages-1001713236-730x330.jpg);
+    			background-size: cover;
+    			background-repeat: no-repeat;
+    		}
+    		
+    		#butoesDeEntrada{
+    			
+    			position:relative;
+			
+    		
+    		
+    		}
+	
+			form{
+				position:relative;
+				margin: 5%;
+				margin-left: 10%;
+				margin-right: 10%;
+				margin-top: 5%;
+				
+				
+			}
+			
+			
+	
+			.imagem-container {
+				 	position: fixed;
+				 	left: 500px;
+				 	margin-top: -130px;
+				 	
+			}	
+				
+    		
+			
+</style>
+	
+</head>
+
+
+<body>
+
+	<div class="imagem-container">
+  		<img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1397188613/1e358e70806d659cc35376116752f5e5.png" height="200">
+	</div>
+	
+	
+	
+
+
+	
+
+	<form action="" id="formCadastroUser">
+	
+	<h2>Cadastro de Usuário</h2>
+
+		<div class="mb-3">
+			<label for="id" class="form-label">ID</label> <input type="text"
+				class="form-control" id="id" readonly="readonly">
+		</div>
+
+		<div class="mb-3">
+			<label for="nome" class="form-label">Nome do Usuário</label> <input
+				type="text" class="form-control" id="nome"
+				placeholder="Informe o nome" required="required">
+		</div>
+
+		<div class="mb-3">
+			<label for="idade" class="form-label">Idade</label> <input
+				type="number" class="form-control" id="idade">
+		</div>
+
+	</form>
+	
+	<div id="butoesDeEntrada">
+		
+		<button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
+		<button type="button" class="btn btn-success" onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
+		<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#pesquisarUser">Pesquisar</button>
+		<button type="button" class="btn btn-danger" onclick="deletarUserdaTela()">Excluir</button>
+		
+	</div>
+
+
+	<div class="modal fade" id="pesquisarUser" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Pesquisar
+						Usuário</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="nameBusca" class="col-form-label">Informe o
+								Nome:</label> <input type="text" class="form-control" id="nameBusca">
+						</div>
+						<div>
+							<button type="button" class="btn btn-success" onclick="pesquisarUser()">Buscar</button>
+						</div>
+					</form>
+
+				<div style="height: 300px; overflow: scroll;">
+					<table class="table" id="tabelaresultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Editar</th>
+								<th scope="col">Excluir</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Fechar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+  			
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+		integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+		crossorigin="anonymous"></script>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
+		integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
+		crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+	
+	
+	
+	function deletarUserdaTela(){
+		var id = $('#id').val();
+		
+		
+		deleteUser(id);
+		document.getElementById('formCadastroUser').reset();
+		
+		
+	}
+	
+	
+	
+	function deleteUser(id){
+		
+		if(confirm('Deseja realmente excluir esse usuário ?')){
+		
+		$.ajax({
+			method : "DELETE",
+			url : "delete",
+			data : "iduser=" + id,
+			success : function(response) {	
+				
+				$('#' + id).remove();
+				
+				alert(response);
+				
+				
+			}
+		}).fail(function(xhr, status, errorThrown) {
+
+			alert("Erro ao excluir usuario por id: " + xhr.responseText);
+
+		});
+		
+	}
+	
+	}
+	
+	
+	
+	
+	
+	
+		function pesquisarUser(){
+			var nome = $('#nameBusca').val();
+			
+			if(nome != null && nome.trim() != ''){
+				$.ajax({
+					method : "GET",
+					url : "buscarPorNome",
+					data : "name" + name,
+					success : function(response) {	
+						$('#tabelaresultados > tbody > tr').remove();
+						
+						for (var i = 0; i < response.length; i++){
+							$('#tabelaresultados > tbody').append('<tr id="'+response[i].id+'"><td>' +response[i].id+ '</td><td>' +response[i].nome+
+							'</td><td> <button type="button" onclick="colocarEmEdicao('+response[i].id+')"  class="btn btn-info">Visualizar</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Excluir</button></td></tr>');
+						}
+						
+					}
+				}).fail(function(xhr, status, errorThrown){ 
+
+					alert("Erro ao buscar user: " + xhr.responseText);
+
+				});
+				
+			}
+		}
+	
+		
+		
+		function colocarEmEdicao(id){
+			
+			$.ajax({
+				method : "GET",
+				url : "buscaruserid",
+				data : "iduser=" + id,
+				success : function(response) {	
+					
+					$("#id").val(response.id);
+					$("#nome").val(response.nome);
+					$("#idade").val(response.idade);
+					
+					$('#pesquisarUser').modal('hide');
+					
+				}
+			}).fail(function(xhr, status, errorThrown) {
+
+				alert("Erro ao buscar usuario por id: " + xhr.responseText);
+
+			});
+			
+		}
+			
+		
+		function salvarUsuario() {
+
+			var id = $("#id").val();
+			var nome = $("#nome").val();
+			var idade = $("#idade").val();
+			
+			if (nome == null || nome != null && nome.trim() == ''){
+				alert('Informe o nome');
+				return;
+			}
+			
+			if (idade == null || idade != null && idade.trim() == ''){
+				alert('Informe a idade');
+				return;
+			}
+
+			$.ajax({
+				method : "POST",
+				url : "salvar",
+				data : JSON.stringify({
+					id : id,
+					nome : nome,
+					idade : idade
+				}),
+				contentType : "application/json; charset=utf-8",
+				success : function(response) {
+
+					$("#id").val(response.id);
+						alert("Salvo com Sucesso!");
+
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				 
+				alert("Erro ao Salvar: " + xhr.responseText);
+
+			});
+
+		}
+	</script>
+
+</body>
+</html>
